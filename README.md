@@ -29,3 +29,7 @@ Follow bellow script on CLI to run this Application
 
 - NodeJs - V12
 - ReactJs - V16
+
+### .env configurations
+
+`REACT_APP_API_URL = http://localhost:3002/ REACT_APP_APP_NAME = GIC - Cafe `
