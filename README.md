@@ -24,3 +24,8 @@ Follow bellow steps on CLI before getting start
 Follow bellow script on CLI to run this Application
 
 1. Run `npm start`
+
+### Requirements
+
+- NodeJs - V12
+- ReactJs - V16
