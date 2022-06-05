@@ -36,7 +36,8 @@ Follow bellow script on CLI to run this Application
 
 ### Screenshot
 
-![Dashboard](https://user-images.githubusercontent.com/36979604/172067136-10238dd7-cbf6-4110-b04d-014bd812a80a.PNG)
+![Dashboard](https://user-images.githubusercontent.com/36979604/172067230-2053dc6f-e4c5-443f-8774-51d69d75a2e9.PNG)
+
 
 
 
