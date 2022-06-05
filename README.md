@@ -38,12 +38,6 @@ Follow bellow script on CLI to run this Application
 
 ![Dashboard](https://user-images.githubusercontent.com/36979604/172067136-10238dd7-cbf6-4110-b04d-014bd812a80a.PNG)
 
-![Add cafe](https://user-images.githubusercontent.com/36979604/172067117-b2bb93d5-94e1-4395-8046-e740cde71213.PNG)
-
-![Edit cafe](https://user-images.githubusercontent.com/36979604/172067128-99a90f19-8703-4cb5-943e-cd4babb02385.PNG)
-
-![Add Employee](https://user-images.githubusercontent.com/36979604/172067160-496492ae-d668-4cb9-a896-73b7e9646a48.PNG)
-
 
 
 
