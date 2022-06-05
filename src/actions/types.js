@@ -4,3 +4,4 @@ export const CREATE_CAFE = "CREATE_CAFE";
 export const CAFE_LIST = "CAFE_LIST";
 export const CREATE_EMPLOYEE = "CREATE_EMPLOYEE";
 export const EMPLOYEE_LIST = "EMPLOYEE_LIST";
+export const IMG_UPLOAD = "IMG_UPLOAD";
