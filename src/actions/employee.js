@@ -4,18 +4,21 @@ import { CREATE_EMPLOYEE, EMPLOYEE_LIST, SHOW_NOTIFICATION } from "./types";
 
 axios.defaults.baseURL = BASE_URL;
 
-export function addNewEmployee(data) {
+export function addNewEmployee(data, handleRedirect) {
   return function (dispatch) {
     const url = `api/v1/employees`;
     axios
       .post(url, data)
       .then(({ data }) => {
         if (data.status) {
-          dispatch(getEmployeeList());
           dispatch({
             type: SHOW_NOTIFICATION,
             payload: { type: "success", message: data.friendly_message },
           });
+          setTimeout(() => {
+            handleRedirect();
+          }, 500);
+          dispatch(getEmployeeList());
         } else {
           dispatch({
             type: SHOW_NOTIFICATION,
@@ -32,9 +35,10 @@ export function addNewEmployee(data) {
   };
 }
 
-export function getEmployeeList() {
+export function getEmployeeList(cafeId) {
   return function (dispatch) {
-    const url = `api/v1/employees`;
+    const filter = cafeId ? `?cafeId=${cafeId}` : "";
+    const url = `api/v1/employees${filter}`;
     axios
       .get(url)
       .then(({ data }) => {
@@ -56,5 +60,29 @@ export function getEmployeeList() {
           payload: { type: "warning", message: error.response?.data.friendly_message },
         });
       });
+  };
+}
+
+export function updateEmployee(data, handleRedirect) {
+  return async function (dispatch) {
+    const url = `api/v1/employees`;
+    try {
+      const newcafe = await axios.put(url, data);
+      if (newcafe.data.status) {
+        dispatch({
+          type: SHOW_NOTIFICATION,
+          payload: { type: "success", message: newcafe.data.friendly_message },
+        });
+        setTimeout(() => {
+          handleRedirect();
+        }, 500);
+        dispatch(getEmployeeList());
+      }
+    } catch (error) {
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        payload: { type: "warning", message: error.response?.data.friendly_message },
+      });
+    }
   };
 }

@@ -35,11 +35,11 @@ const styles = (theme) => ({
     padding: "10px",
   },
   submitButton: {
-    float: "left",
+    float: "right",
     position: "relative",
   },
   closeButton: {
-    float: "right",
+    float: "left",
     position: "relative",
   },
 });

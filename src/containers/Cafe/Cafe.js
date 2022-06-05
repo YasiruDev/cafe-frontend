@@ -8,10 +8,10 @@ import { getCafeList } from "../../actions/cafe";
 import styles from "./styles";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { AgGridReact } from "ag-grid-react";
-import AddNewCafeModal from "./AddNewCafeModal";
 
 import BtnCellRenderer from "./../../components/BtnCellRenderer";
-import { BUTTON, MODAL, PAGE_TITLE, STRING } from "../../config";
+import { BUTTON, MODAL, PAGE_TITLE, ROUTES, STRING } from "../../config";
+import SpanCellRenderer from "../../components/SpanCellRenderer";
 
 class Cafe extends Component {
   constructor(props) {
@@ -22,13 +22,31 @@ class Cafe extends Component {
         {
           headerName: "Logo",
           field: "logo",
-          width: 350,
+          width: 200,
           cellRenderer: this.celRenderFunc,
         },
         { headerName: "Name", field: "name", width: 200 },
-        { headerName: "Employees", field: "employees" },
+        {
+          headerName: "Employees",
+          field: "employees",
+          cellRenderer: "spanCellRenderer",
+          cellRendererParams: {
+            clicked: (field) => {
+              this.onSpanClick(field);
+            },
+          },
+        },
         { headerName: "Description", field: "description", width: 350 },
-        { headerName: "Location", field: "location", width: 300 },
+        {
+          headerName: "Location",
+          field: "location",
+          width: 300,
+          filter: true,
+          filterParams: {
+            buttons: ["reset", "apply"],
+            debounceMs: 200,
+          },
+        },
         { headerName: "Status", field: "status" },
         {
           headerName: "Activity",
@@ -36,21 +54,34 @@ class Cafe extends Component {
           cellRenderer: "btnCellRenderer",
           cellRendererParams: {
             clicked: (field) => {
-              console.log("Edit");
+              this.onEditBtnClick(field);
             },
           },
         },
       ],
       frameworkComponents: {
         btnCellRenderer: BtnCellRenderer,
+        spanCellRenderer: SpanCellRenderer,
       },
       rowData: [],
     };
+    this.onEditBtnClick = this.onEditBtnClick.bind(this);
+    this.onSpanClick = this.onSpanClick.bind(this);
   }
 
-  celRenderFunc(params) {
-    const { value } = params;
-    return `<img style="height: 14px; width: 14px" src=${value} />`;
+  onEditBtnClick(e) {
+    const {
+      history: { push },
+    } = this.props;
+    console.log("e--->", e);
+    push({
+      pathname: `/edit-cafe/${e.id}`,
+      state: { data: e },
+    });
+    // this.route(`/edit-cafe/${e.id}`);
+  }
+  onSpanClick(e) {
+    this.route(`/employee/${e.id}`);
   }
   componentDidMount() {
     const { getCafeList } = this.props;
@@ -78,6 +109,16 @@ class Cafe extends Component {
     this.setState({ rowData: cafeDataSet });
   }
 
+  route(path) {
+    const {
+      history: { push },
+    } = this.props;
+    push(`${path}`);
+  }
+  celRenderFunc(params) {
+    const { value } = params;
+    return <img style={{ objectFit: "contain", width: "100%" }} src={value} alt="" />;
+  }
   onGridReady(params) {
     this.gridApi = params.api;
     this.columnApi = params.columnApi;
@@ -104,14 +145,16 @@ class Cafe extends Component {
             alignItems="flex-end"
             className={classes.gridBtn}
           >
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => this.handleOpen(MODAL.ADD_CAFE)}
-            >
-              {BUTTON.ADD_CAFE}
-            </Button>
-            <AddNewCafeModal />
+            <Grid item xs={6}></Grid>
+            <Grid item xs={6}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={() => this.route(ROUTES.NEW_CAFE)}
+              >
+                {BUTTON.ADD_CAFE}
+              </Button>
+            </Grid>
           </Grid>
           <Grid
             container

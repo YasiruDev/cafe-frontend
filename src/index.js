@@ -10,7 +10,6 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
 import Notification from "./components/Notification";
-import AddNewCafeModal from "./containers/Cafe/AddNewCafeModal";
 import theme from "./styles/theme/theme";
 
 import "./index.css";

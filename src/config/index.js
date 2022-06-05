@@ -12,12 +12,14 @@ export const STRING = {
 
 export const PAGE_TITLE = {
   CAFE: "Cafe`s",
+  NEW_CAFE: "New Cafe",
+  NEW_EMPLOYEE: "New Employee",
   EMPLOYEE: "Employee",
 };
 
 export const BUTTON = {
-  ADD_CAFE: "Add Cafe",
-  ADD_EMPLOYEE: "Add Employee",
+  ADD_CAFE: "Add New Café",
+  ADD_EMPLOYEE: "Add New Employee",
 };
 
 export const MODAL = {
@@ -26,10 +28,14 @@ export const MODAL = {
 };
 export const ROUTES = {
   CAFE: "/cafe",
+  NEW_CAFE: "/new-cafe",
   EMPLOYEE: "/employee",
+  NEW_EMPLOYEE: "/new-employee",
+  UPLOADS: "uploads",
 };
 export const VALIDATION = {
   REQUIRED: "Required !",
+  INVAL_EMAIL: "Invalid Email !",
 };
 export const DROPDOWN = {
   GENDER: [
@@ -37,6 +43,10 @@ export const DROPDOWN = {
     { value: "Female", label: "Female" },
   ],
 };
-export const validateEmail = (from, to) => {
+export const validateDateDifference = (from, to) => {
   return moment.duration(from.diff(to)).asDays();
+};
+
+export const validateEmail = (email) => {
+  return !/\S+@\S+\.\S+/.test(email);
 };

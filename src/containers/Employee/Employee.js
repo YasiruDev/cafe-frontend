@@ -9,10 +9,10 @@ import { getEmployeeList } from "../../actions/employee";
 import styles from "./styles";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { AgGridReact } from "ag-grid-react";
-import AddNewCafeModal from "./AddNewEmployeeModal";
+// import AddNewCafeModal from "./AddNewEmployeeModal";
 
 import BtnCellRenderer from "../../components/BtnCellRenderer";
-import { BUTTON, MODAL, PAGE_TITLE, STRING, validateEmail } from "../../config";
+import { BUTTON, MODAL, PAGE_TITLE, ROUTES, STRING, validateDateDifference } from "../../config";
 
 class Employee extends Component {
   constructor(props) {
@@ -22,8 +22,10 @@ class Employee extends Component {
         { headerName: "#", field: "id", width: 100 },
         { headerName: "Name", field: "name", width: 200 },
         { headerName: "Email", field: "email", width: 300 },
+        { headerName: "Gender", field: "gender", width: 300 },
         { headerName: "Phone Number", field: "phone", width: 300 },
         { headerName: "Days Work", field: "daysWorked" },
+        { headerName: "Cafe Id", field: "cafeId", hide: true },
         { headerName: "Cafe Name", field: "cafeName" },
         {
           headerName: "Activity",
@@ -31,7 +33,7 @@ class Employee extends Component {
           cellRenderer: "btnCellRenderer",
           cellRendererParams: {
             clicked: (field) => {
-              console.log("Edit");
+              this.onEditBtnClick(field);
             },
           },
         },
@@ -44,8 +46,8 @@ class Employee extends Component {
   }
 
   componentDidMount() {
-    const { getEmployeeList } = this.props;
-    getEmployeeList();
+    const { match, getEmployeeList } = this.props;
+    getEmployeeList(match ? match.params.id : null);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,10 +62,12 @@ class Employee extends Component {
         employeeObj.name = rowData.name;
         employeeObj.email = rowData.email;
         employeeObj.phone = rowData.phone;
-        employeeObj.daysWorked = validateEmail(
+        employeeObj.gender = rowData.gender;
+        employeeObj.daysWorked = validateDateDifference(
           moment().startOf("day"),
           moment(rowData.addedDate, "YYYY-MM-DD")
         );
+        employeeObj.cafeId = rowData.cafe?.id;
         employeeObj.cafeName = rowData.cafe?.name;
         employeeObj.status = rowData.status === 0 ? STRING.DEACTIVE : STRING.ACTIVE;
 
@@ -73,6 +77,21 @@ class Employee extends Component {
     this.setState({ rowData: employeeDataSet });
   }
 
+  onEditBtnClick(e) {
+    const {
+      history: { push },
+    } = this.props;
+    push({
+      pathname: `/edit-employee/${e.id}`,
+      state: { data: e },
+    });
+  }
+  route(path) {
+    const {
+      history: { push },
+    } = this.props;
+    push(`${path}`);
+  }
   onGridReady(params) {
     this.gridApi = params.api;
     this.columnApi = params.columnApi;
@@ -101,11 +120,11 @@ class Employee extends Component {
             <Button
               color="secondary"
               variant="outlined"
-              onClick={() => this.handleOpen(MODAL.ADD_EMPLOYEE)}
+              onClick={() => this.route(ROUTES.NEW_EMPLOYEE)}
             >
               {BUTTON.ADD_EMPLOYEE}
             </Button>
-            <AddNewCafeModal />
+            {/* <AddNewCafeModal /> */}
           </Grid>
           <Grid
             container
